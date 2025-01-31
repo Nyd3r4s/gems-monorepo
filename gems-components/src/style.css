@@ -17,9 +17,6 @@ html.dark {
   background-color: #1a1a1a;
 }
 
-/* Apply transitions */
-body * {
-}
 
 button {
   transition: all 0.1s linear;

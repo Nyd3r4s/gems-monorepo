@@ -1,16 +1,26 @@
 <template>
   <button
     type="button"
-    class="inline-flex items-center justify-center px-6 py-2 rounded-2xl transition-all duration-200 focus:outline-none border-2"
+    class="inline-flex items-center rounded-lg transition-all duration-200 focus:outline-none border-2"
+    :class="[
+      compact ? 'p-2 border-0' : 'px-6 py-2',
+      compact ? 'justify-start' : 'justify-center',
+      compact && !showLabel ? 'w-10' : ''
+    ]"
   >
     <component
       v-if="icon"
       :is="icon"
       :size="18"
-      class="mr-2"
+      :class="{ 'mr-2': !compact || (compact && showLabel) }"
     />
-    <span v-if="label">{{ label }}</span>
-    <slot />
+    <span 
+      v-if="label && (!compact || showLabel)"
+      class="whitespace-nowrap transition-opacity duration-200"
+      :class="{ 'opacity-0 group-hover:opacity-100': compact }"
+    >
+      {{ label }}
+    </span>
   </button>
 </template>
 
@@ -28,11 +38,15 @@ export default defineComponent({
     label: {
       type: String,
       default: ''
+    },
+    compact: {
+      type: Boolean,
+      default: false
+    },
+    showLabel: {
+      type: Boolean,
+      default: false
     }
   }
 })
 </script>
-
-<style scoped>
-/* Your styles here */
-</style>
