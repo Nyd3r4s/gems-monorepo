@@ -2,8 +2,8 @@
   <button
     type="button"
     @click="toggleDark()"
-    class="relative inline-flex h-6 w-14 items-center rounded-full hover:transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 hover:scale-105 hover:shadow-md"
-    :class="isDark ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-200 hover:bg-gray-300'"
+    class="relative inline-flex h-6 w-14 items-center rounded-full hover:transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 hover:scale-105 hover:shadow-md"
+    :class="isDark ? 'bg-primary-600 hover:bg-primary-700' : 'bg-gray-200 hover:bg-gray-300'"
   >
     <WeatherNight :size="18" class="translate-x-1" />
     <WeatherSunny :size="18" class="translate-x-4" />

@@ -1,14 +1,19 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  darkMode: "class",
+  darkMode: 'class',
   content: [
-    "./index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
-    "../gems-mfe/src/**/*.{vue,js,ts,jsx,tsx}",
+    './index.html',
+    './src/**/*.{vue,js,ts,jsx,tsx}',
+    '../gems-mfe/src/**/*.{vue,js,ts,jsx,tsx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      text: {
+        primary: 'var(--text-primary)',
+        secondary: 'var(--text-secondary)',
+        hover: 'var(--text-hover)',
+      },
+    },
   },
   plugins: [],
 }
-
