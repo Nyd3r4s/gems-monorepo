@@ -6,10 +6,11 @@
   "main": "src/main.ts",
   "exports": {
     ".": "./src/main.ts",
-    "./components/*": "./src/components/*"
+    "./components/*": "./src/components/*",
+    "./stories/*": "./src/stories/*"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "npm run storybook",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",

@@ -1,0 +1,19 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "tasks": {
+      "dev": {
+        "persistent": true,
+        "cache": false
+      },
+      "#dev": {
+        "cache": false,
+        "persistent": true,
+        "inputs": ["src/**/*.{ts,tsx,vue}"]
+      },
+      "#storybook": {
+        "cache": false,
+        "persistent": true,
+        "inputs": ["src/**/*.{ts,tsx,vue,stories.ts,mdx}"]
+      }
+    }
+  }

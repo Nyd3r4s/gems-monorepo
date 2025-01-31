@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
-import TestDummyBtn from '../components/TestDummyButton.vue'
+import TestDummyBtn from '../components/TestDummyBtn.vue'
 
 // Meta information for the component
 const meta = {
-    title: 'Components/TestDummyBtn',
+    title: 'Components/TestDummyButton',
     component: TestDummyBtn,
     tags: ['autodocs'],
     argTypes: {

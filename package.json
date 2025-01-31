@@ -1,0 +1,14 @@
+{
+    "private": true,
+    "workspaces": [
+        "gems-components",
+        "gems-mfe"
+    ],
+    "scripts": {
+        "dev": "turbo run dev"
+    },
+    "devDependencies": {
+        "turbo": "latest"
+    },
+    "packageManager": "npm@8.5.0"
+}
