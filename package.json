@@ -10,5 +10,8 @@
     "devDependencies": {
         "turbo": "latest"
     },
-    "packageManager": "npm@8.5.0"
+    "packageManager": "npm@8.5.0",
+    "dependencies": {
+        "@vueuse/core": "^12.5.0"
+    }
 }
