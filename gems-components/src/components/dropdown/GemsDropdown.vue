@@ -33,7 +33,7 @@
         <!-- Create New Option -->
         <li v-if="allowCreate" class="border-t border-gray-200 dark:border-gray-700 mt-1">
           <button
-            @click="onCreateNew"
+            @click="showCreateModal = true"
             class="w-full flex items-center px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
             <PlusIcon :size="20" class="mr-2" />
@@ -42,6 +42,25 @@
         </li>
       </ul>
     </div>
+
+    <!-- Create New Modal -->
+    <GemsModal
+      v-model="showCreateModal"
+      title="Create New Option"
+      confirm-label="Create"
+      @confirm="handleCreateConfirm"
+    >
+      <div class="space-y-4">
+        <div>
+          <input
+            v-model="newOptionValue"
+            type="text"
+            class="w-full px-3 py-2 border dark:text-white border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600"
+            placeholder="Enter new option"
+          />
+        </div>
+      </div>
+    </GemsModal>
   </div>
 </template>
 
@@ -50,6 +69,7 @@ import { defineComponent, ref, PropType } from 'vue'
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown.vue'
 import CheckIcon from 'vue-material-design-icons/Check.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
+import GemsModal from '../modal/GemsModal.vue'
 
 interface Option {
   label: string
@@ -62,6 +82,7 @@ export default defineComponent({
     ChevronDownIcon,
     CheckIcon,
     PlusIcon,
+    GemsModal,
   },
   props: {
     options: {
@@ -84,6 +105,8 @@ export default defineComponent({
   emits: ['update:modelValue', 'create-new'],
   setup(props, { emit }) {
     const isOpen = ref(false)
+    const showCreateModal = ref(false)
+    const newOptionValue = ref('')
     const selected = ref<Option | null>(
       props.options.find((opt) => opt.value === props.modelValue) || null,
     )
@@ -98,17 +121,27 @@ export default defineComponent({
       isOpen.value = false
     }
 
-    const onCreateNew = () => {
-      emit('create-new')
-      isOpen.value = false
+    const handleCreateConfirm = () => {
+      if (newOptionValue.value.trim()) {
+        const newOption = {
+          label: newOptionValue.value.trim(),
+          value: newOptionValue.value.trim(),
+        }
+        emit('create-new', newOption)
+        selectOption(newOption)
+        newOptionValue.value = ''
+        showCreateModal.value = false
+      }
     }
 
     return {
       isOpen,
       selected,
+      showCreateModal,
+      newOptionValue,
       toggle,
       selectOption,
-      onCreateNew,
+      handleCreateConfirm,
     }
   },
 })
