@@ -37,7 +37,7 @@ npm install
 Start all applications in development mode:
 
 ```bash
-npm run dev
+turbo dev
 ```
 
 This command uses Turborepo to concurrently run:
