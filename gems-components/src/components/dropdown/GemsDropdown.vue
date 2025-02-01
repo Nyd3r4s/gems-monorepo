@@ -29,6 +29,17 @@
           <span>{{ option.label }}</span>
           <CheckIcon v-if="option.value === selected?.value" :size="20" class="text-primary-500" />
         </li>
+
+        <!-- Create New Option -->
+        <li v-if="allowCreate" class="border-t border-gray-200 dark:border-gray-700 mt-1">
+          <button
+            @click="onCreateNew"
+            class="w-full flex items-center px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          >
+            <PlusIcon :size="20" class="mr-2" />
+            <span>Create new</span>
+          </button>
+        </li>
       </ul>
     </div>
   </div>
@@ -38,6 +49,7 @@
 import { defineComponent, ref, PropType } from 'vue'
 import ChevronDownIcon from 'vue-material-design-icons/ChevronDown.vue'
 import CheckIcon from 'vue-material-design-icons/Check.vue'
+import PlusIcon from 'vue-material-design-icons/Plus.vue'
 
 interface Option {
   label: string
@@ -49,6 +61,7 @@ export default defineComponent({
   components: {
     ChevronDownIcon,
     CheckIcon,
+    PlusIcon,
   },
   props: {
     options: {
@@ -63,8 +76,12 @@ export default defineComponent({
       type: String,
       default: 'Select an option',
     },
+    allowCreate: {
+      type: Boolean,
+      default: false,
+    },
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'create-new'],
   setup(props, { emit }) {
     const isOpen = ref(false)
     const selected = ref<Option | null>(
@@ -81,11 +98,17 @@ export default defineComponent({
       isOpen.value = false
     }
 
+    const onCreateNew = () => {
+      emit('create-new')
+      isOpen.value = false
+    }
+
     return {
       isOpen,
       selected,
       toggle,
       selectOption,
+      onCreateNew,
     }
   },
 })

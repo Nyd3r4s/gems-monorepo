@@ -1,3 +1,4 @@
+import { ref } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import GemsDropdown from '../components/dropdown/GemsDropdown.vue'
 import ToggleDarkMode from '../components/switch/ToggleDarkMode.vue'
@@ -18,6 +19,10 @@ const meta = {
     placeholder: {
       control: 'text',
       description: 'Placeholder text when no option is selected',
+    },
+    allowCreate: {
+      control: 'boolean',
+      description: 'Allow creating new options',
     },
   },
 } satisfies Meta<typeof GemsDropdown>
@@ -45,6 +50,44 @@ export const WithSelection: Story = {
   },
 }
 
+export const WithCreateOption: Story = {
+  render: () => ({
+    components: { GemsDropdown },
+    setup() {
+      const options = ref([...sampleOptions])
+      const selectedValue = ref('')
+
+      const handleCreate = () => {
+        const newValue = `${options.value.length + 1}`
+        options.value.push({
+          label: `Option ${newValue}`,
+          value: newValue,
+        })
+      }
+
+      return {
+        options,
+        selectedValue,
+        handleCreate,
+      }
+    },
+    template: `
+      <div class="w-64">
+        <GemsDropdown
+          v-model="selectedValue"
+          :options="options"
+          placeholder="Select or create new"
+          :allow-create="true"
+          @create-new="handleCreate"
+        />
+        <div class="mt-4 text-sm text-gray-500">
+          Selected: {{ selectedValue }}
+        </div>
+      </div>
+    `,
+  }),
+}
+
 export const WithDarkMode: Story = {
   render: () => ({
     components: { GemsDropdown, ToggleDarkMode },
@@ -61,6 +104,49 @@ export const WithDarkMode: Story = {
             :options="sampleOptions"
             placeholder="Select an option"
           />
+        </div>
+      </div>
+    `,
+  }),
+}
+
+export const WithDarkModeAndCreate: Story = {
+  render: () => ({
+    components: { GemsDropdown, ToggleDarkMode },
+    setup() {
+      const options = ref([...sampleOptions])
+      const selectedValue = ref('')
+
+      const handleCreate = () => {
+        const newValue = `${options.value.length + 1}`
+        options.value.push({
+          label: `Option ${newValue}`,
+          value: newValue,
+        })
+      }
+
+      return {
+        options,
+        selectedValue,
+        handleCreate,
+      }
+    },
+    template: `
+      <div class="p-4 space-y-4">
+        <div class="flex justify-end">
+          <ToggleDarkMode />
+        </div>
+        <div class="w-64">
+          <GemsDropdown
+            v-model="selectedValue"
+            :options="options"
+            placeholder="Select or create new"
+            :allow-create="true"
+            @create-new="handleCreate"
+          />
+          <div class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+            Selected: {{ selectedValue }}
+          </div>
         </div>
       </div>
     `,
