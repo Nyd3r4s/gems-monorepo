@@ -12,15 +12,14 @@
 
     <!-- Navigation Links -->
     <div class="py-4">
-      <ul class="space-y-1">
+      <ul class="space-y-1 transform transition-all duration-300">
         <li v-for="(item, index) in navItems" :key="index">
           <GemsButton
             :icon="item.icon"
             :label="item.label"
-            compact
+            :compact="!isExpanded"
             class="transition-all duration-300 pl-2"
             :class="[isExpanded ? 'w-32' : 'w-10']"
-            :showLabel="isExpanded"
           />
         </li>
       </ul>

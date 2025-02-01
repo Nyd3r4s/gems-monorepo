@@ -4,6 +4,15 @@ import ToggleDarkMode from '../components/switch/ToggleDarkMode.vue'
 import AccountIcon from 'vue-material-design-icons/Account.vue'
 import CogIcon from 'vue-material-design-icons/Cog.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
+import HomeIcon from 'vue-material-design-icons/Home.vue'
+
+// Explicitly type the component props
+type GemsButtonProps = {
+  label?: string
+  icon?: any // Using any for now to fix the material icons type issue
+  compact?: boolean
+  highlight?: boolean
+}
 
 const meta = {
   title: 'Components/GemsButton',
@@ -12,77 +21,79 @@ const meta = {
   argTypes: {
     label: {
       control: 'text',
-      description: 'Button label text'
+      description: 'Button label text',
     },
     icon: {
       control: 'object',
-      description: 'Material Design Icon component'
+      description: 'Material Design Icon component',
     },
     compact: {
       control: 'boolean',
-      description: 'Compact mode for navigation'
+      description: 'Compact mode for navigation',
     },
-    showLabel: {
+    highlight: {
       control: 'boolean',
-      description: 'Show label in compact mode'
-    }
-  }
+      description: 'Highlight button with primary color',
+    },
+  },
 } satisfies Meta<typeof GemsButton>
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<GemsButtonProps>
 
 export const Default: Story = {
   args: {
-    label: 'Click me'
-  }
+    label: 'Home',
+    icon: HomeIcon,
+  },
 }
 
 export const WithIcon: Story = {
   args: {
     label: 'Account Settings',
-    icon: AccountIcon
-  }
+    icon: AccountIcon,
+  },
+}
+
+export const Highlighted: Story = {
+  args: {
+    label: 'Primary Action',
+    icon: PlusIcon,
+    highlight: true,
+  },
 }
 
 export const CompactMode: Story = {
   args: {
     label: 'Navigation Item',
     icon: AccountIcon,
-    compact: true
-  }
-}
-
-export const CompactWithLabel: Story = {
-  args: {
-    label: 'Navigation Item',
-    icon: AccountIcon,
     compact: true,
-    showLabel: true
-  }
+  },
 }
 
 export const NavigationExample: Story = {
+  args: {},
   render: () => ({
     components: { GemsButton },
     setup() {
-      return { AccountIcon, CogIcon, PlusIcon }
+      return { HomeIcon, AccountIcon, CogIcon }
     },
     template: `
       <div class="flex flex-col gap-2 w-32">
-        <GemsButton :icon="HomeIcon" label="Home" compact />
-        <GemsButton :icon="AccountIcon" label="Profile" compact showLabel />
+        <GemsButton :icon="HomeIcon" label="Home" compact highlight />
+        <GemsButton :icon="AccountIcon" label="Profile" compact />
         <GemsButton :icon="CogIcon" label="Settings" compact />
       </div>
-    `
-  })
+    `,
+  }),
 }
 
 export const WithDarkMode: Story = {
+  args: {},
   render: () => ({
     components: { GemsButton, ToggleDarkMode },
     setup() {
-      return { AccountIcon }
+      return { AccountIcon, PlusIcon }
     },
     template: `
       <div class="flex flex-col gap-4">
@@ -91,10 +102,10 @@ export const WithDarkMode: Story = {
         </div>
         <div class="flex gap-4">
           <GemsButton :icon="AccountIcon" label="Account" />
+          <GemsButton :icon="PlusIcon" label="Add New" highlight />
           <GemsButton label="Regular Button" />
-          <GemsButton :icon="AccountIcon" label="Compact" compact showLabel />
         </div>
       </div>
-    `
-  })
-} 
+    `,
+  }),
+}
