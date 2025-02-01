@@ -17,6 +17,14 @@ const meta = {
     icon: {
       control: 'object',
       description: 'Material Design Icon component'
+    },
+    compact: {
+      control: 'boolean',
+      description: 'Compact mode for navigation'
+    },
+    showLabel: {
+      control: 'boolean',
+      description: 'Show label in compact mode'
     }
   }
 } satisfies Meta<typeof GemsButton>
@@ -37,34 +45,34 @@ export const WithIcon: Story = {
   }
 }
 
-export const WithSlot: Story = {
+export const CompactMode: Story = {
   args: {
-    icon: PlusIcon
-  },
-  render: (args) => ({
-    components: { GemsButton },
-    setup() {
-      return { args }
-    },
-    template: `
-      <GemsButton v-bind="args">
-        Add New Item
-      </GemsButton>
-    `
-  })
+    label: 'Navigation Item',
+    icon: AccountIcon,
+    compact: true
+  }
 }
 
-export const ButtonGroup: Story = {
+export const CompactWithLabel: Story = {
+  args: {
+    label: 'Navigation Item',
+    icon: AccountIcon,
+    compact: true,
+    showLabel: true
+  }
+}
+
+export const NavigationExample: Story = {
   render: () => ({
     components: { GemsButton },
     setup() {
       return { AccountIcon, CogIcon, PlusIcon }
     },
     template: `
-      <div class="flex gap-4">
-        <GemsButton :icon="PlusIcon">Add</GemsButton>
-        <GemsButton :icon="AccountIcon">Account</GemsButton>
-        <GemsButton :icon="CogIcon">Settings</GemsButton>
+      <div class="flex flex-col gap-2 w-32">
+        <GemsButton :icon="HomeIcon" label="Home" compact />
+        <GemsButton :icon="AccountIcon" label="Profile" compact showLabel />
+        <GemsButton :icon="CogIcon" label="Settings" compact />
       </div>
     `
   })
@@ -82,8 +90,9 @@ export const WithDarkMode: Story = {
           <ToggleDarkMode />
         </div>
         <div class="flex gap-4">
-          <GemsButton :icon="AccountIcon">Account</GemsButton>
-          <GemsButton>Regular Button</GemsButton>
+          <GemsButton :icon="AccountIcon" label="Account" />
+          <GemsButton label="Regular Button" />
+          <GemsButton :icon="AccountIcon" label="Compact" compact showLabel />
         </div>
       </div>
     `

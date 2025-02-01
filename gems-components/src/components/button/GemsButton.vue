@@ -1,11 +1,11 @@
 <template>
   <button
     type="button"
-    class="inline-flex items-center rounded-lg transition-all duration-200 focus:outline-none border-2"
+    class="inline-flex items-center h-10 rounded-lg transition-all duration-200 border-2 transform active:scale-95"
     :class="[
-      compact ? 'p-2 border-0' : 'px-6 py-2',
+      compact ? 'p-2' : 'px-6 py-2',
       compact ? 'justify-start' : 'justify-center',
-      compact && !showLabel ? 'w-10' : ''
+      compact && !showLabel ? 'w-10' : '',
     ]"
   >
     <component
@@ -14,7 +14,7 @@
       :size="18"
       :class="{ 'mr-2': !compact || (compact && showLabel) }"
     />
-    <span 
+    <span
       v-if="label && (!compact || showLabel)"
       class="whitespace-nowrap transition-opacity duration-200"
       :class="{ 'opacity-0 group-hover:opacity-100': compact }"
@@ -33,20 +33,20 @@ export default defineComponent({
   props: {
     icon: {
       type: Object as PropType<Component>,
-      default: null
+      default: null,
     },
     label: {
       type: String,
-      default: ''
+      default: '',
     },
     compact: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showLabel: {
       type: Boolean,
-      default: false
-    }
-  }
+      default: false,
+    },
+  },
 })
 </script>

@@ -13,6 +13,10 @@ export default {
         secondary: 'var(--text-secondary)',
         hover: 'var(--text-hover)',
       },
+      border: {
+        color: 'var(--border-color)',
+        hover: 'var(--border-hover)',
+      },
     },
   },
   plugins: [],

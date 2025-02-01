@@ -1,14 +1,14 @@
 <template>
-  <nav 
-    class="fixed top-0 h-screen bg-white dark:bg-gray-800 border border-grey-200 border-text-secondary transition-all duration-300 group"
+  <nav
+    class="fixed top-0 h-screen border-r border-grey-200 border-text-secondary transition-all duration-300 group bg-gray-200 dark:bg-gray-950"
     :class="[isExpanded ? 'w-32' : 'w-10']"
     @mouseenter="toggleExpand(true)"
     @mouseleave="toggleExpand(false)"
   >
     <!-- Hamburger Button -->
-    <div class="flex items-center pl-2">
+    <button class="flex items-center pl-2" disabled>
       <MenuIcon :size="24" />
-    </div>
+    </button>
 
     <!-- Navigation Links -->
     <div class="py-4">
@@ -43,16 +43,16 @@ export default defineComponent({
     MenuIcon,
     HomeIcon,
     AccountIcon,
-    CogIcon
+    CogIcon,
   },
   setup() {
     const isExpanded = ref(false)
     const isManuallyExpanded = ref(false)
-    
+
     const navItems = [
       { label: 'Home', icon: HomeIcon },
       { label: 'Profile', icon: AccountIcon },
-      { label: 'Settings', icon: CogIcon }
+      { label: 'Settings', icon: CogIcon },
     ]
 
     const toggleExpand = (expanded: boolean) => {
@@ -70,8 +70,8 @@ export default defineComponent({
       isExpanded,
       navItems,
       toggleExpand,
-      toggleManual
+      toggleManual,
     }
-  }
+  },
 })
-</script> 
+</script>
