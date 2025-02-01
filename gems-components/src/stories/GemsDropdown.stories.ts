@@ -57,12 +57,9 @@ export const WithCreateOption: Story = {
       const options = ref([...sampleOptions])
       const selectedValue = ref('')
 
-      const handleCreate = () => {
-        const newValue = `${options.value.length + 1}`
-        options.value.push({
-          label: `Option ${newValue}`,
-          value: newValue,
-        })
+      const handleCreate = (newOption: { label: string; value: string }) => {
+        options.value.push(newOption)
+        console.log('Created new option:', newOption)
       }
 
       return {
@@ -76,8 +73,8 @@ export const WithCreateOption: Story = {
         <GemsDropdown
           v-model="selectedValue"
           :options="options"
-          placeholder="Select or create new"
           :allow-create="true"
+          placeholder="Select or create new"
           @create-new="handleCreate"
         />
         <div class="mt-4 text-sm text-gray-500">

@@ -1,125 +1,119 @@
-# GEMS Vue 3 Monorepo
+# Gems Monorepo
 
-A monorepo containing shared components and micro-frontend applications built with Vue 3, TypeScript, and Tailwind CSS.
+A Vue 3 monorepo using Turborepo, containing a component library and micro-frontend application.
 
 ## Project Structure
 
+```
 gems-monorepo/
-├── gems-components/ # Shared component library
-└── gems-mfe/ # Micro-frontend application
-
-## Features
-
-- 🚀 Vue 3 with Composition API
-- 💪 TypeScript
-- 🎨 Tailwind CSS
-- 📚 Storybook for component documentation
-- 🔧 ESLint + Prettier for code quality
-- 🛠️ Vite for fast development
-- 🧪 Component testing setup
+├── gems-components/     # Vue 3 component library with Storybook
+├── gems-mfe/           # Micro-frontend application
+├── package.json        # Workspace configuration
+└── turbo.json         # Turborepo configuration
+```
 
 ## Prerequisites
 
 - Node.js (v18 or higher)
-- npm (v9 or higher)
+- npm (v8.5.0 or higher)
 
-## Quick Start
+## Setup
 
 1. Clone the repository:
 
-```
-bash
+```bash
 git clone <repository-url>
 cd gems-monorepo
 ```
 
-2. Install dependencies for both projects:
+2. Install dependencies for all workspaces:
 
-```
-nstall components library dependencies
-cd gems-components
-npm install
-Install MFE dependencies
-cd ../gems-mfe
+```bash
 npm install
 ```
 
 ## Development
 
-### Component Library (gems-components)
+Start all applications in development mode:
 
-```
-cd gems-components
-Start development server
+```bash
 npm run dev
-Run Storybook
-npm run storybook
-Build for production
-npm run build
-Run linting
-npm run lint
-Format code
-npm run format
 ```
 
-### Micro Frontend (gems-mfe)
+This command uses Turborepo to concurrently run:
 
-```
-cd gems-mfe
-Start development server
-npm run dev
-Run Storybook
-npm run storybook
-Build for production
-npm run build
-Run linting
-npm run lint
-Format code
-npm run format
+- Component Library (Storybook): http://localhost:6006
+- Micro-frontend: http://localhost:5173
+
+## Workspace Details
+
+### gems-components
+
+Component library featuring:
+
+- Vue 3 components with TypeScript
+- Storybook documentation
+- TailwindCSS styling
+- Dark mode support
+- Material Design Icons
+
+Available commands:
+
+```bash
+npm run dev        # Start Storybook
+npm run build     # Build the library
+npm run lint      # Run ESLint
+npm run format    # Run Prettier
 ```
 
-## Tech Stack
+### gems-mfe
+
+Micro-frontend application that consumes the component library.
+
+Available commands:
+
+```bash
+npm run dev       # Start development server
+npm run build    # Build for production
+npm run preview  # Preview production build
+```
+
+## Technology Stack
 
 - Vue 3
 - TypeScript
-- Tailwind CSS
-- Vite
+- TailwindCSS
 - Storybook
-- ESLint
-- Prettier
+- Turborepo
+- Vite
+- Material Design Icons
+- ESLint + Prettier
 
-## Project Structure Details
+## Turborepo Features
 
-### gems-components/
+- Shared build caching
+- Parallel execution
+- Task dependencies
+- Workspace management
+- Incremental builds
 
-- `src/components/` - Reusable Vue components
-- `src/stories/` - Storybook stories
-- `.storybook/` - Storybook configuration
-- `tailwind.config.js` - Tailwind CSS configuration
+## Configuration Files
 
-### gems-mfe/
+- `package.json`: Workspace definitions and shared dependencies
+- `turbo.json`: Pipeline configurations for development and build tasks
+- `.npmrc`: npm configuration for workspaces
+- `tsconfig.json`: Base TypeScript configuration
 
-- `src/` - MFE application source code
-- `src/components/` - Application-specific components
-- `src/router/` - Vue Router configuration
-- `tailwind.config.js` - Tailwind CSS configuration
+## Common Issues
 
-## Contributing
+If you encounter cache issues:
 
-1. Create a new branch
-2. Make your changes
-3. Submit a pull request
+```bash
+# Clear Turborepo cache
+npx turbo clean
 
-## Useful Commands
-
-Clean and reinstall dependencies:
-
-```
-Remove dependencies and build artifacts
-rm -rf node_modules package-lock.json dist
-Clean npm cache
-npm cache clean --force
-Reinstall dependencies
+# Reinstall dependencies
+rm -rf node_modules
 npm install
 ```
 
