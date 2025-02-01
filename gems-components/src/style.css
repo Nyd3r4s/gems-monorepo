@@ -28,3 +28,9 @@ button {
   border-[var(--border-color)] 
   hover:border-[var(--border-hover)];
 }
+
+li {
+  @apply cursor-pointer;
+  @apply text-[var(--text-secondary)] 
+  hover:text-[var(--text-hover)];
+}
