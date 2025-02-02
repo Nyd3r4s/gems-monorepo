@@ -2,11 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-html.dark {
-  background-color: #1a1a1a;
-  color: #e5e5e5;
+/* Light theme (default) */
+:root {
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b7280; /* gray-500 */
+  --text-hover: #1a1a1a;
+  --border-color: transparent;
+  --border-hover: #6b7280; /* gray-500 */
+
+  @apply text-[var(--text-primary)];
 }
 
-body * {
-  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out;
+/* Dark theme */
+html.dark {
+  --text-primary: #e5e5e5;
+  --text-secondary: #9ca3af; /* gray-400 */
+  --text-hover: #e5e5e5;
+  background-color: #1a1a1a;
+  --border-color: transparent;
+  --border-hover: #e5e5e5; /* gray-400 */
+}
+
+button {
+  transition: all 0.1s linear;
+  @apply text-[var(--text-secondary)] 
+  hover:text-[var(--text-hover)] 
+  border-[var(--border-color)] 
+  hover:border-[var(--border-hover)];
+}
+
+li {
+  @apply cursor-pointer;
+  @apply text-[var(--text-secondary)] 
+  hover:text-[var(--text-hover)];
 }

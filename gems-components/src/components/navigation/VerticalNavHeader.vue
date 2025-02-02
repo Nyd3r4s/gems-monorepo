@@ -1,11 +1,11 @@
 <template>
   <nav
-    class="fixed top-0 h-screen border-r border-grey-200 border-text-secondary transition-all duration-300 group bg-gray-200 dark:bg-gray-950 flex flex-col justify-between"
-    :class="[isExpanded ? 'w-32' : 'w-10']"
+    class="fixed top-0 h-screen border-r border-grey-200 border-text-secondary transition-all duration-300 group backdrop-blur-md bg-gray-200 dark:bg-gray-950/30 flex flex-col justify-between z-50"
+    :style="{ width: isExpanded ? NAV_WIDTH.EXPANDED : NAV_WIDTH.COLLAPSED }"
     @mouseenter="toggleExpand(true)"
     @mouseleave="toggleExpand(false)"
   >
-    <div>
+    <div class="mt-4">
       <!-- Hamburger Button -->
       <button class="flex items-center pl-2" disabled>
         <MenuIcon :size="24" />
@@ -17,10 +17,10 @@
           <li v-for="item in navItems" :key="item.label">
             <GemsButton
               :icon="item.icon"
-              :label="item.label"
+              :label="isAnimationComplete ? item.label : ''"
               :compact="!isExpanded"
               class="transition-all duration-300 pl-2"
-              :class="[isExpanded ? 'w-32' : 'w-10']"
+              :style="{ width: isExpanded ? NAV_WIDTH.EXPANDED : NAV_WIDTH.COLLAPSED }"
               @click="handleNavClick(item.label)"
             />
           </li>
@@ -31,7 +31,10 @@
     <!-- Dark Mode Toggle -->
     <div
       class="mx-2 py-4 pl-2 transition-all duration-300 overflow-hidden flex items-center"
-      :class="[isExpanded ? 'opacity-100 w-32' : 'opacity-0 w-0']"
+      :style="{
+        width: isExpanded ? NAV_WIDTH.EXPANDED : '0',
+        opacity: isExpanded ? 1 : 0,
+      }"
     >
       <ToggleDarkMode />
     </div>
@@ -39,16 +42,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import MenuIcon from 'vue-material-design-icons/Menu.vue'
-import type { Component } from 'vue'
+import type { PropType } from 'vue'
 import GemsButton from '../button/GemsButton.vue'
 import ToggleDarkMode from '../switch/ToggleDarkMode.vue'
-
-interface NavItem {
-  label: string
-  icon: Component
-}
+import { NAV_WIDTH } from '../../constants'
+import type { NavItem } from '../../types'
 
 export default defineComponent({
   name: 'VerticalNavHeader',
@@ -67,6 +67,18 @@ export default defineComponent({
   setup(props, { emit }) {
     const isExpanded = ref(false)
     const isManuallyExpanded = ref(false)
+    const isAnimationComplete = ref(false)
+
+    watch(isExpanded, (newValue) => {
+      if (newValue) {
+        // Wait for expansion animation to complete
+        setTimeout(() => {
+          isAnimationComplete.value = true
+        }, 150) // Half of the transition duration
+      } else {
+        isAnimationComplete.value = false
+      }
+    })
 
     const toggleExpand = (expanded: boolean) => {
       if (!isManuallyExpanded.value) {
@@ -85,9 +97,11 @@ export default defineComponent({
 
     return {
       isExpanded,
+      isAnimationComplete,
       toggleExpand,
       toggleManual,
       handleNavClick,
+      NAV_WIDTH,
     }
   },
 })

@@ -1,7 +1,7 @@
 <template>
   <button
     type="button"
-    class="inline-flex items-center h-10 rounded-lg transition-all duration-200 border-2 transform active:scale-95"
+    class="inline-flex items-center h-10 rounded-lg transition-all duration-200 border-2 transform active:scale-95 active:shadow-inner hover:-translate-y-0.5 overflow-hidden"
     :class="[buttonClasses, { 'gradient-border hover-gradient': highlight }]"
   >
     <component v-if="icon" :is="icon" :size="18" :class="iconClasses" />
@@ -44,7 +44,7 @@ export default defineComponent({
       'justify-start': true,
       'p-2': props.compact,
       'px-6 py-2': !props.compact,
-      'border-transparent rounded-3xl text-black dark:text-black': props.highlight,
+      'border-transparent bg-black rounded-3xl text-black dark:text-black': props.highlight,
     }))
 
     const iconClasses = computed(() => ({
@@ -70,12 +70,6 @@ export default defineComponent({
     linear-gradient(white, white) padding-box,
     linear-gradient(to right, #facc15, #a855f7, #4f46e5) border-box;
   border: 2px solid transparent;
-}
-
-:global(.dark) .gradient-border {
-  background:
-    linear-gradient(#1a1a1a, #1a1a1a) padding-box,
-    linear-gradient(to right, #facc15, #a855f7, #4f46e5) border-box;
 }
 
 .hover-gradient:hover {
