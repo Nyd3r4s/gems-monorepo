@@ -27,17 +27,6 @@
         </ul>
       </div>
     </div>
-
-    <!-- Dark Mode Toggle -->
-    <div
-      class="mx-2 py-4 pl-2 transition-all duration-300 overflow-hidden flex items-center"
-      :style="{
-        width: isExpanded ? NAV_WIDTH.EXPANDED : '0',
-        opacity: isExpanded ? 1 : 0,
-      }"
-    >
-      <ToggleDarkMode />
-    </div>
   </nav>
 </template>
 

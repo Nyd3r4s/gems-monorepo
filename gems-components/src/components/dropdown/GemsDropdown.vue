@@ -4,11 +4,12 @@
     <button
       type="button"
       @click="toggle"
-      class="flex items-center justify-between w-full px-4 py-2 text-left border-2 rounded-lg border-grey-900 transition-all duration-200 bg-white dark:bg-gray-800 border-[var(--border-hover)]"
+      class="flex items-center justify-between w-full border-2 rounded-lg border-grey-900 transition-all duration-200 bg-white dark:bg-gray-800 border-[var(--border-hover)]"
+      :class="[size === 'small' ? 'px-2 py-1 text-sm' : 'px-4 py-2']"
     >
       <span>{{ selected?.label || placeholder }}</span>
       <ChevronDownIcon
-        :size="20"
+        :size="size === 'small' ? 16 : 20"
         class="transition-transform duration-200"
         :class="{ 'transform rotate-180': isOpen }"
       />
@@ -100,6 +101,10 @@ export default defineComponent({
     allowCreate: {
       type: Boolean,
       default: false,
+    },
+    size: {
+      type: String as PropType<'default' | 'small'>,
+      default: 'default',
     },
   },
   emits: ['update:modelValue', 'create-new'],

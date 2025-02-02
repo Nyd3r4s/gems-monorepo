@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "arcpay-sdk": "^0.0.14",
     "gems-components": "file:../gems-components",
     "pinia": "^2.3.1",
     "vue": "^3.5.13",

@@ -1,9 +1,9 @@
 <template>
   <button
     type="button"
-    @click="toggleDark()"
     class="relative inline-flex h-6 w-14 items-center rounded-full hover:transition-all duration-200 ring-2 focus:ring-primary-500 focus:ring-offset-2 hover:scale-105 hover:shadow-md"
     :class="isDark ? 'bg-indigo-700 hover:bg-primary-700' : 'bg-gray-200 hover:bg-gray-300'"
+    @click="toggle"
   >
     <WeatherNight :size="18" class="text-gray-300 hover:text-white translate-x-1" />
     <WeatherSunny :size="18" class="translate-x-4" />
@@ -24,9 +24,10 @@ export default defineComponent({
   name: 'ToggleDarkMode',
   components: {
     WeatherNight,
-    WeatherSunny
+    WeatherSunny,
   },
-  setup() {
+  emits: ['dark-mode-toggle'],
+  setup(_, { emit }) {
     const isDark = useDark({
       selector: 'html',
       attribute: 'class',
@@ -36,9 +37,14 @@ export default defineComponent({
     })
     const toggleDark = useToggle(isDark)
 
+    const toggle = () => {
+      toggleDark()
+      emit('dark-mode-toggle', isDark.value)
+    }
+
     return {
       isDark,
-      toggleDark,
+      toggle,
     }
   },
 })
