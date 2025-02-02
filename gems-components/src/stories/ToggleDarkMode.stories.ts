@@ -7,9 +7,9 @@ const meta = {
   tags: ['autodocs'],
   decorators: [
     () => ({
-      template: '<div class="p-4"><story/></div>'
-    })
-  ]
+      template: '<div class="p-4"><story/></div>',
+    }),
+  ],
 } satisfies Meta<typeof ToggleDarkMode>
 
 export default meta
@@ -20,9 +20,9 @@ export const Default: Story = {}
 export const InDarkContainer: Story = {
   decorators: [
     () => ({
-      template: '<div class="p-4 dark:bg-gray-800 rounded-lg"><story/></div>'
-    })
-  ]
+      template: '<div class="p-4 dark:bg-gray-800 rounded-lg"><story/></div>',
+    }),
+  ],
 }
 
 export const WithLabel: Story = {
@@ -33,7 +33,7 @@ export const WithLabel: Story = {
           <span class="text-sm font-medium">Toggle theme</span>
           <story/>
         </div>
-      `
-    })
-  ]
-} 
+      `,
+    }),
+  ],
+}
