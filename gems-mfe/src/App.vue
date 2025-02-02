@@ -31,11 +31,9 @@ export default defineComponent({
     })
 
     const cryptoOptions = [
+      { label: 'Placeholder Filter (PHF)', value: 'PHF' },
       { label: 'Bitcoin (BTC)', value: 'BTC' },
       { label: 'Ethereum (ETH)', value: 'ETH' },
-      { label: 'Binance Coin (BNB)', value: 'BNB' },
-      { label: 'Cardano (ADA)', value: 'ADA' },
-      { label: 'Solana (SOL)', value: 'SOL' },
     ]
 
     const navItems = [

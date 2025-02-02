@@ -4,6 +4,9 @@
       <!-- Header -->
       <thead class="bg-gray-50 dark:bg-gray-800">
         <tr>
+          <th class="px-6 py-3 text-left">
+            <span class="sr-only">Action</span>
+          </th>
           <th
             v-for="column in LISTING_COLUMNS"
             :key="column.key"
@@ -19,8 +22,16 @@
         <tr
           v-for="listing in listings"
           :key="listing.id"
-          class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+          class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group"
+          @click="handleListingClick(listing.id)"
         >
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-left">
+            <span
+              class="inline-flex items-center text-xs font-medium text-indigo-600 dark:text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              Buy Now ->
+            </span>
+          </td>
           <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
             {{ formatDate(listing.created_at) }}
           </td>
@@ -62,6 +73,7 @@
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import type { ArcPayListing } from '@/types/listing'
+import { useArcpay } from 'arcpay-sdk'
 
 export const LISTING_COLUMNS = [
   { key: 'created_at', label: 'Date' },
@@ -82,6 +94,18 @@ export default defineComponent({
     },
   },
   setup() {
+    const handleListingClick = async (listingId: string | null) => {
+      if (!listingId) return
+
+      try {
+        const arcpayClient = useArcpay('algo:testnet')
+        const confirmation = arcpayClient.buy(listingId)
+        console.log('Purchase confirmation:', confirmation)
+      } catch (error) {
+        console.error('Failed to purchase listing:', error)
+      }
+    }
+
     const formatDate = (dateString: string | null) => {
       if (!dateString) return '-'
       return new Date(dateString).toLocaleDateString('en-US', {
@@ -108,6 +132,7 @@ export default defineComponent({
       formatDate,
       formatAddress,
       formatPrice,
+      handleListingClick,
     }
   },
 })

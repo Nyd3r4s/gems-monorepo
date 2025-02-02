@@ -1,10 +1,13 @@
 <template>
   <main class="p-4">
     <div class="flex justify-between items-center mb-6">
-      <h1 class="text-2xl font-bold">{{ title }}</h1>
+      <h1 class="text-2xl font-bold">Welcome to Gems</h1>
     </div>
 
-    <p class="mb-6">{{ description }}</p>
+    <p class="mb-6">This is the home page of our application.</p>
+    <p class="mb-6">Nav panel is WIP and not functional.</p>
+    <p class="mb-6">Hover and click on a row to purchase a listing.</p>
+    <p class="mb-6">Click on the "Create Listing" button to create a new listing.</p>
 
     <div class="p-4">
       <div class="mb-6">
@@ -28,8 +31,6 @@ export default defineComponent({
     ListingsTable,
   },
   setup() {
-    const title = ref('Welcome to Gems')
-    const description = ref('This is the home page of our application.')
     const listings = ref<ArcPayListing[]>([])
 
     onMounted(async () => {
@@ -43,8 +44,6 @@ export default defineComponent({
     })
 
     return {
-      title,
-      description,
       listings,
     }
   },
