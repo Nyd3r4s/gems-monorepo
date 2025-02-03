@@ -38,6 +38,7 @@ export default defineComponent({
         const arcpayClient = useArcpay('algo:testnet')
         const response = await arcpayClient.getListings()
         listings.value = (response.data as unknown as ArcPayListing[]) ?? []
+        console.log(response)
       } catch (error) {
         console.error('Failed to fetch listings:', error)
       }
