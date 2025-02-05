@@ -2,13 +2,27 @@
   <button
     type="button"
     class="inline-flex items-center rounded-lg transition-all duration-200 border-2 transform active:scale-95 active:shadow-inner hover:-translate-y-0.5 overflow-hidden"
-    :class="[buttonClasses, { 'gradient-border hover-gradient': highlight }]"
+    :class="[
+      buttonClasses,
+      highlight
+        ? 'bg-white dark:bg-gray-900 border-transparent bg-gradient-to-r from-yellow-400 via-purple-500 to-indigo-500 bg-clip-padding hover:bg-gradient-to-r hover:from-yellow-400 hover:via-purple-500 hover:to-indigo-500 hover:text-white'
+        : '',
+    ]"
   >
-    <component v-if="icon" :is="icon" :size="iconSizes[size]" :class="iconClasses" />
+    <div
+      v-if="highlight"
+      class="absolute inset-[2px] bg-white dark:bg-gray-900 rounded-lg transition-colors group-hover:bg-transparent"
+    />
+    <component
+      v-if="icon"
+      :is="icon"
+      :size="iconSizes[size]"
+      :class="[iconClasses, highlight ? 'relative z-10' : '']"
+    />
     <span
       v-if="label && !compact"
       class="whitespace-nowrap transition-opacity duration-200"
-      :class="labelClasses"
+      :class="[labelClasses, highlight ? 'relative z-10' : '']"
     >
       {{ label }}
     </span>
@@ -64,7 +78,7 @@ export default defineComponent({
       'px-4 py-1.5': !props.compact && props.size === 'small',
       'px-6 py-2': !props.compact && props.size === 'default',
       'px-8 py-3': !props.compact && props.size === 'large',
-      'border-transparent bg-black rounded-3xl text-black dark:text-black': props.highlight,
+      'group relative': props.highlight,
       [sizeClasses[props.size]]: true,
     }))
 
@@ -85,28 +99,3 @@ export default defineComponent({
   },
 })
 </script>
-
-<style scoped>
-.gradient-border {
-  background:
-    linear-gradient(white, white) padding-box,
-    linear-gradient(to right, #facc15, #a855f7, #4f46e5) border-box;
-  border: 2px solid transparent;
-}
-
-:global(.dark) .gradient-border {
-  background:
-    linear-gradient(#2a2a2a, #2a2a2a) padding-box,
-    linear-gradient(to right, #facc15, #a855f7, #4f46e5) border-box;
-}
-
-.hover-gradient:hover {
-  background:
-    linear-gradient(to right, #facc15, #a855f7, #4f46e5) padding-box,
-    linear-gradient(to right, #facc15, #a855f7, #4f46e5) border-box;
-  color: white;
-  transition:
-    background 0.3s ease,
-    color 0.3s ease;
-}
-</style>
