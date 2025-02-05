@@ -1,71 +1,78 @@
 <template>
-  <div class="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
-    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-      <!-- Header -->
-      <thead class="bg-gray-50 dark:bg-gray-800">
-        <tr>
-          <th class="px-6 py-3 text-left">
-            <span class="sr-only">Action</span>
-          </th>
-          <th
-            v-for="column in LISTING_COLUMNS"
-            :key="column.key"
-            class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
-          >
-            {{ column.label }}
-          </th>
-        </tr>
-      </thead>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <!-- Listing Card -->
+    <div
+      v-for="listing in listings"
+      :key="listing.id"
+      class="group relative bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-xl transition-all duration-200 overflow-hidden cursor-pointer"
+      @click="handleListingClick(listing.id)"
+    >
+      <!-- Thumbnail -->
+      <div class="aspect-square overflow-hidden bg-gray-100 dark:bg-gray-700">
+        <img
+          :src="listing.asset_thumbnail || '/placeholder-image.png'"
+          :alt="listing.name"
+          class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-200"
+        />
+      </div>
 
-      <!-- Body -->
-      <tbody class="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-        <tr
-          v-for="listing in listings"
-          :key="listing.id"
-          class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors cursor-pointer group"
-          @click="handleListingClick(listing.id)"
-        >
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-left">
-            <span
-              class="inline-flex items-center text-xs font-medium text-indigo-600 dark:text-indigo-400 opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              Buy Now ->
-            </span>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-            {{ formatDate(listing.created_at) }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm">
-            <span
-              class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
-              :class="{
-                'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200':
-                  listing.status === 'active',
-                'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200':
-                  listing.status === 'sold',
-              }"
-            >
-              {{ listing.status }}
-            </span>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+      <!-- Content -->
+      <div class="p-4">
+        <!-- Title and Status -->
+        <div class="flex items-start justify-between mb-2">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white line-clamp-2">
             {{ listing.name }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+          </h3>
+          <span
+            class="ml-2 px-2 py-1 text-xs font-semibold rounded-full whitespace-nowrap"
+            :class="{
+              'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200':
+                listing.status === 'active',
+              'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200':
+                listing.status === 'sold',
+            }"
+          >
+            {{ listing.status }}
+          </span>
+        </div>
+
+        <!-- Price -->
+        <div class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+          {{ formatPrice(getListingPrice(listing)) }}
+        </div>
+
+        <!-- Details -->
+        <div class="space-y-1 text-sm text-gray-500 dark:text-gray-400">
+          <div class="flex items-center gap-1">
+            <span class="font-medium">Type:</span>
             {{ listing.type }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="font-medium">Chain:</span>
             {{ listing.chain }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="font-medium">Seller:</span>
             <span class="font-mono">{{ formatAddress(listing.seller_address) }}</span>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-            {{ formatPrice(listing.sale_price, listing.currency_ticker) }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="font-medium">Listed:</span>
+            {{ formatDate(listing.created_at) }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Buy Now Overlay -->
+      <div
+        class="absolute inset-0 bg-indigo-600/0 group-hover:bg-indigo-600/10 transition-colors duration-200 flex items-center justify-center"
+      >
+        <span
+          class="px-4 py-2 bg-indigo-600 text-white rounded-lg opacity-0 group-hover:opacity-100 transform group-hover:-translate-y-1 transition-all duration-200"
+        >
+          Buy Now
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -82,7 +89,7 @@ export const LISTING_COLUMNS = [
   { key: 'type', label: 'Type' },
   { key: 'chain', label: 'Chain' },
   { key: 'seller_address', label: 'Seller' },
-  { key: 'sale_price', label: 'Price' },
+  { key: 'price', label: 'Asset & Price' },
 ] as const
 
 export default defineComponent({
@@ -94,9 +101,14 @@ export default defineComponent({
     },
   },
   setup() {
-    const handleListingClick = async (listingId: string | null) => {
-      if (!listingId) return
+    const getListingPrice = (listing: ArcPayListing): number => {
+      if (listing.type === 'sale' && listing.sales.length > 0) {
+        return listing.sales[0].price
+      }
+      return 0
+    }
 
+    const handleListingClick = async (listingId: string) => {
       try {
         const arcpayClient = useArcpay('algo:testnet')
         const confirmation = arcpayClient.buy(listingId)
@@ -106,8 +118,7 @@ export default defineComponent({
       }
     }
 
-    const formatDate = (dateString: string | null) => {
-      if (!dateString) return '-'
+    const formatDate = (dateString: string) => {
       return new Date(dateString).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
@@ -117,14 +128,12 @@ export default defineComponent({
       })
     }
 
-    const formatAddress = (address: string | null) => {
-      if (!address) return '-'
+    const formatAddress = (address: string) => {
       return `${address.slice(0, 6)}...${address.slice(-4)}`
     }
 
-    const formatPrice = (price: number | null, currency: string | null) => {
-      if (!price || !currency) return '-'
-      return `${price} ${currency}`
+    const formatPrice = (price: number) => {
+      return `${price} ALGO`
     }
 
     return {
@@ -133,13 +142,17 @@ export default defineComponent({
       formatAddress,
       formatPrice,
       handleListingClick,
+      getListingPrice,
     }
   },
 })
 </script>
 
 <style scoped>
-.table-container {
-  @apply overflow-x-auto shadow-md sm:rounded-lg;
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

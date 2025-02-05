@@ -37,6 +37,7 @@ export default defineComponent({
       try {
         const arcpayClient = useArcpay('algo:testnet')
         const response = await arcpayClient.getListings()
+        console.log('response', response.data)
         listings.value = (response.data as unknown as ArcPayListing[]) ?? []
         console.log(response)
       } catch (error) {
