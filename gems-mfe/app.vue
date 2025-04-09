@@ -8,8 +8,10 @@ import ChartBarIcon from 'vue-material-design-icons/ChartBar.vue'
 import DiamondIcon from 'vue-material-design-icons/Diamond.vue'
 import TransactionIcon from 'vue-material-design-icons/SwapHorizontal.vue'
 import { useRouter } from 'vue-router'
-import CreateListingBtn from './components/CreateListingBtn.vue'
-import { createClient, useArcpay } from 'arcpay-sdk'
+import CreateListingBtn from '@/components/CreateListingBtn.vue'
+import { NuxtRouteAnnouncer } from '#components'
+import HomeView from '@/pages/HomeView.vue'
+
 
 export default defineComponent({
   name: 'App',
@@ -19,15 +21,23 @@ export default defineComponent({
     GemsDropdown,
     DiamondIcon,
     CreateListingBtn,
+    HomeView,
   },
   setup() {
-    const router = useRouter()
     const selectedCrypto = ref('')
 
-    onMounted(() => {
-      createClient('algo:testnet', {
-        apiKey: 'f2844771-55de-4b9d-9b6e-d957620c474e',
-      })
+    onMounted(async () => {
+      if (import.meta.client) {
+        try {
+          const { createClient } = await import('arcpay-sdk')
+          const arcpayClient = createClient ('algo:testnet', {
+            apiKey: 'f2844771-55de-4b9d-9b6e-d957620c474e',
+          })
+          console.log('Arcpay client initialized:', arcpayClient)
+        } catch (error) {
+          console.error('Failed to initialize Arcpay client:', error)
+        }
+      }
     })
 
     const cryptoOptions = [
@@ -56,11 +66,14 @@ export default defineComponent({
     }
 
     const handleDarkModeToggle = async (isDark: boolean) => {
-      try {
-        const arcpayClient = useArcpay('algo:testnet')
-        arcpayClient.toggleDarkMode(isDark)
-      } catch (error) {
-        console.error('Failed to sync dark mode:', error)
+      if (import.meta.client) {
+        try {
+          const { useArcpay } = await import('arcpay-sdk')
+          const arcpayClient = useArcpay('algo:testnet')
+          arcpayClient.toggleDarkMode(isDark)
+        } catch (error) {
+          console.error('Failed to sync dark mode:', error)
+        }
       }
     }
 
@@ -104,7 +117,7 @@ export default defineComponent({
     <!-- Navigation and Content -->
     <VerticalNavHeader :nav-items="navItems" @nav-click="handleNavClick" />
     <main class="pl-10 pt-20">
-      <RouterView />
+      <HomeView />
     </main>
   </div>
 </template>

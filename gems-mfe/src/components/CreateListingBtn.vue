@@ -1,7 +1,6 @@
 <template>
   <GemsButton
     label="Create a Listing"
-    :icon="TransactionIcon"
     highlight
     size="small"
     @click="handleCreateListing"
@@ -9,10 +8,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent } from 'vue'
 import { GemsButton } from 'gems-components'
-import TransactionIcon from 'vue-material-design-icons/SwapHorizontal.vue'
-import { useArcpay } from 'arcpay-sdk'
 
 export default defineComponent({
   name: 'CreateListingBtn',
@@ -21,19 +18,26 @@ export default defineComponent({
   },
   setup() {
     const handleCreateListing = async () => {
-      try {
-        const arcpayClient = useArcpay('algo:testnet')
-        const listingId: string = await arcpayClient.create()
-        console.log('Created listing with ID:', listingId)
-        // You might want to emit an event or use a store to notify parent components
-      } catch (error) {
-        console.error('Failed to create listing:', error)
-        // Handle error appropriately
+      if (import.meta.client) {
+        try {
+          // Dynamically load arcpay functions from the plugin
+          const { createClient } = await import('arcpay-sdk')
+          const arcpayClient = createClient('algo:testnet', {
+            apiKey: 'f2844771-55de-4b9d-9b6e-d957620c474e',
+          })
+          const listingId: string = await arcpayClient.create()
+          console.log('Created listing with ID:', listingId)
+          // You might want to emit an event or use a store to notify parent components
+        } catch (error) {
+          console.error('Failed to create listing:', error)
+          // Handle error appropriately
+        }
+      } else {
+        console.warn('handleCreateListing can only be executed on the client side.')
       }
     }
 
     return {
-      TransactionIcon,
       handleCreateListing,
     }
   },

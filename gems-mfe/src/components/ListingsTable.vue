@@ -73,7 +73,6 @@
 import { defineComponent } from 'vue'
 import type { PropType } from 'vue'
 import type { ArcPayListing } from '@/types/listing'
-import { useArcpay } from 'arcpay-sdk'
 
 export const LISTING_COLUMNS = [
   { key: 'created_at', label: 'Date' },
@@ -97,12 +96,17 @@ export default defineComponent({
     const handleListingClick = async (listingId: string | null) => {
       if (!listingId) return
 
-      try {
-        const arcpayClient = useArcpay('algo:testnet')
-        const confirmation = arcpayClient.buy(listingId)
-        console.log('Purchase confirmation:', confirmation)
-      } catch (error) {
-        console.error('Failed to purchase listing:', error)
+      if (import.meta.client) {
+        try {
+          const { useArcpay } = await import('arcpay-sdk')
+          const arcpayClient = useArcpay('algo:testnet')
+          const confirmation = await arcpayClient.buy(listingId)
+          console.log('Purchase confirmation:', confirmation)
+        } catch (error) {
+          console.error('Failed to purchase listing:', error)
+        }
+      } else {
+        console.warn('handleListingClick can only be executed on the client side.')
       }
     }
 

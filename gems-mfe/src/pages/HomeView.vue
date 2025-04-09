@@ -22,7 +22,7 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
 import ListingsTable from '@/components/ListingsTable.vue'
-import { useArcpay } from 'arcpay-sdk'
+// import { useArcpay } from 'arcpay-sdk'
 import type { ArcPayListing } from '@/types/listing'
 
 export default defineComponent({
@@ -34,13 +34,16 @@ export default defineComponent({
     const listings = ref<ArcPayListing[]>([])
 
     onMounted(async () => {
-      try {
-        const arcpayClient = useArcpay('algo:testnet')
-        const response = await arcpayClient.getListings()
-        listings.value = (response.data as unknown as ArcPayListing[]) ?? []
-        console.log(response)
-      } catch (error) {
-        console.error('Failed to fetch listings:', error)
+      if (import.meta.client) {
+        try {
+          const { useArcpay } = await import('arcpay-sdk')
+          const arcpayClient = useArcpay('algo:testnet')
+          const response = await arcpayClient.getListings()
+          listings.value = (response.data as unknown as ArcPayListing[]) ?? []
+          console.log(response)
+        } catch (error) {
+          console.error('Failed to fetch listings:', error)
+        }
       }
     })
 
